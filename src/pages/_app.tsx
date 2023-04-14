@@ -2,6 +2,8 @@ import { ErrorFallbackProps, ErrorComponent, ErrorBoundary, AppProps } from "@bl
 import React from "react"
 import { withBlitz } from "src/blitz-client"
 
+import "app/core/styles/index.css"
+
 function RootErrorFallback({ error }: ErrorFallbackProps) {
   return (
     <ErrorComponent
