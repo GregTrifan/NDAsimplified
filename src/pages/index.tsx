@@ -3,7 +3,6 @@ import { BlitzPage } from "@blitzjs/next"
 import styles from "src/styles/Home.module.css"
 import { GetServerSideProps } from "next"
 import { Ticket } from "types/Ticket"
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs"
 import TicketCard from "src/components/TicketCard"
 import { supabase } from "src/supabase/client"
 

@@ -19,6 +19,7 @@ const AuthPage: BlitzPage = () => {
           <Auth
             redirectTo="/"
             supabaseClient={supabaseClient}
+            providers={[]}
             appearance={{
               theme: ThemeSupa,
             }}
