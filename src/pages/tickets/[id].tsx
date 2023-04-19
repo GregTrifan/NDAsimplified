@@ -9,6 +9,7 @@ import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-
 import { faPaypal } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { TbBrandCoinbase } from "react-icons/tb"
+import PaymentForm from "src/components/PaymentForm"
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUB ?? "")
 
 const TicketPage: BlitzPage = ({ ticket }: { ticket?: Ticket | null }) => {
@@ -43,26 +44,12 @@ const TicketPage: BlitzPage = ({ ticket }: { ticket?: Ticket | null }) => {
               <div className="bg-white shadow-md rounded-md overflow-hidden p-4">
                 <h2 className="font-bold text-xl mb-2">Payment</h2>
                 <div className="flex flex-col space-y-4">
-                  <div className="form-control ">
-                    <label className="label">
-                      <span className="label-text">Your Email</span>
-                    </label>
-                    <label className="input-group">
-                      <span>Email</span>
-                      <input
-                        type="text"
-                        placeholder="info@site.com"
-                        className="input input-bordered w-full"
-                      />
-                    </label>
-                  </div>
                   <div>
                     <Elements
                       stripe={stripePromise}
                       options={{ mode: "payment", currency: "usd", amount: ticket?.price ?? 0 }}
                     >
-                      <PaymentElement />
-                      <button className="btn btn-primary w-full my-3">Pay</button>
+                      <PaymentForm />
                     </Elements>
                   </div>
                   <p className="mx-auto">OR</p>

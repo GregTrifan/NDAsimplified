@@ -10,15 +10,12 @@ const TicketCard = ({ ticket }: { ticket: Ticket }) => {
         <h2 className="font-bold text-xl mb-2">{title}</h2>
         <p className="text-gray-700 text-base">{description}</p>
         <div className="flex justify-between items-center mt-4">
-          {
-            //@ts-ignore
-            <Link href={Routes.TicketPage({ id })}>
-              <button className="btn btn-primary">
-                <span className="my-auto"> Buy Now</span>
-                <span className="font-bold text-lg ml-2 my-auto">${price}</span>
-              </button>
-            </Link>
-          }
+          <Link href={Routes.TicketPage({ id: `${id}` })}>
+            <button className="btn btn-primary">
+              <span className="my-auto"> Buy Now</span>
+              <span className="font-bold text-lg ml-2 my-auto">${price}</span>
+            </button>
+          </Link>
           <div>
             <p className="text-gray-500 text-base">
               {startDate} - {endDate}

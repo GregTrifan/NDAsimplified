@@ -23,14 +23,7 @@ const Layout: BlitzLayout<{
           <div className="flex-none">
             <ul className="menu menu-horizontal px-1">
               <li className="btn btn-primary">
-                <Link
-                  href={
-                    //@ts-ignore Dumb path generation
-                    Routes.AuthPage()
-                  }
-                >
-                  Login/Signup
-                </Link>
+                <Link href={Routes.AuthPage()}>Login/Signup</Link>
               </li>
             </ul>
           </div>

@@ -6,6 +6,7 @@ import { SessionContextProvider, Session } from "@supabase/auth-helpers-react"
 import { useState } from "react"
 import { Database } from "src/supabase/types"
 import "app/core/styles/index.css"
+import { Toaster } from "react-hot-toast"
 
 function RootErrorFallback({ error }: ErrorFallbackProps) {
   return (
@@ -25,6 +26,7 @@ function MyApp({ Component, pageProps }: AppProps<any>) {
         supabaseClient={supabaseClient}
         initialSession={pageProps.initialSession}
       >
+        <Toaster />
         {getLayout(<Component {...pageProps} />)}
       </SessionContextProvider>
     </ErrorBoundary>
