@@ -49,7 +49,7 @@ const TicketPage: BlitzPage = ({ ticket }: { ticket?: Ticket | null }) => {
                       stripe={stripePromise}
                       options={{ mode: "payment", currency: "usd", amount: ticket?.price ?? 0 }}
                     >
-                      <PaymentForm />
+                      <PaymentForm ticket={ticket} />
                     </Elements>
                   </div>
                   <p className="mx-auto">OR</p>

@@ -1,13 +1,15 @@
 import React, { useState } from "react"
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js"
 import toast from "react-hot-toast"
+import { Ticket } from "types/Ticket"
+import { useRouter } from "next/router"
 
-const PaymentForm = () => {
+const PaymentForm = ({ ticket }: { ticket: Ticket }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [email, setEmail] = useState("")
   const stripe = useStripe()
   const elements = useElements()
-
+  const router = useRouter()
   const handleSubmit = async (event) => {
     event.preventDefault()
     setIsLoading(true)
@@ -20,7 +22,7 @@ const PaymentForm = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          amount: 2000, // the amount you want to charge, in cents
+          amount: (ticket?.price ?? 0) * 100, // the amount you want to charge, in cents
         }),
       })
 
@@ -36,15 +38,28 @@ const PaymentForm = () => {
         },
         receipt_email: email,
       })
-
       if (result?.error) {
         console.error(result.error)
         toast.error("Payment failed")
         setIsLoading(false)
       } else {
-        setIsLoading(false)
-        toast.success("Payment sent successfully")
-        // Payment succeeded, show a success message or redirect to a success page
+        const responseConfirmation = await fetch("/api/completePayment", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            paymentId: result?.paymentIntent.id,
+            email: email,
+            ticketId: ticket.id,
+          }),
+        })
+        if (responseConfirmation.status === 200) {
+          setIsLoading(false)
+          toast.success("Payment sent successfully")
+          await router.push("/paymentSuccess")
+          // Payment succeeded, show a success message or redirect to a success page
+        }
       }
     } catch (error) {
       console.error(error)
