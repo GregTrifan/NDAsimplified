@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import Stripe from "stripe"
-import nodemailer from "nodemailer"
+import sgMail from "@sendgrid/mail"
 import { supabase } from "src/supabase/client"
 import { Ticket } from "types/Ticket"
 
@@ -9,15 +9,7 @@ const stripe = new Stripe(stripeSecretKey!, {
   apiVersion: "2022-11-15",
 })
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.SMTP_EMAIL,
-    pass: process.env.SMTP_PASSWORD,
-  },
-})
+sgMail.setApiKey(process.env.SENDGRID_API_KEY!)
 
 export default async function completePayment(req: NextApiRequest, res: NextApiResponse) {
   const { paymentId, email, ticketId } = req.body
@@ -30,9 +22,9 @@ export default async function completePayment(req: NextApiRequest, res: NextApiR
 
     if (paymentIntent.status === "succeeded") {
       // If payment was successful, send a confirmation email
-      const mailOptions = {
-        from: process.env.SMTP_EMAIL,
+      const msg = {
         to: email,
+        from: process.env.SENDGRID_FROM_EMAIL!,
         subject: "Payment confirmation",
         text: `Dear ${email},
 
@@ -58,7 +50,7 @@ NDASimple Team
 `,
       }
 
-      await transporter.sendMail(mailOptions)
+      await sgMail.send(msg)
 
       res.status(200).json({ message: "Confirmation email sent" })
     } else {
