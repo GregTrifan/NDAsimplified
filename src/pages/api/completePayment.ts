@@ -26,27 +26,112 @@ export default async function completePayment(req: NextApiRequest, res: NextApiR
         to: email,
         from: process.env.SENDGRID_FROM_EMAIL!,
         subject: "Payment confirmation",
-        text: `Dear ${email},
+        text: `<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      /* Styling for email body */
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        color: #333333;
+        background-color: #f2f2f2;
+        padding: 20px;
+      }
 
-Thank you for your purchase of ${ticket.title} ticket! We are excited to have you join us.
+      /* Styling for email header */
+      h1 {
+        font-size: 24px;
+        color: #10B981;
+        margin-top: 0;
+      }
 
-We are pleased to confirm that your payment of ${paymentIntent.amount / 100} ${
+      /* Styling for ticket details section */
+      .ticket-details {
+        margin-top: 30px;
+        background-color: #ffffff;
+        border: 1px solid #dddddd;
+        border-radius: 5px;
+        padding: 20px;
+      }
+
+      /* Styling for ticket details table */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #dddddd;
+      }
+
+      th {
+        background-color: #10B981;
+        color: #ffffff;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Thank you for your purchase!</h1>
+
+    <p>
+      Dear ${email},
+    </p>
+
+    <p>
+      Thank you for your purchase of ${ticket.title} ticket! We are excited to have you join us.
+    </p>
+
+    <p>
+      We are pleased to confirm that your payment of ${paymentIntent.amount / 100} ${
           paymentIntent.currency
         } has been received and your ticket is now booked.
+    </p>
 
-Here are the details of your booking:
-Ticket ID: ${ticket.id}
-Title: ${ticket.title}
-Price: ${ticket.price}
+    <div class="ticket-details">
+      <h2>Ticket Details</h2>
 
-Please bring a copy of this email and a valid ID to the event for check-in.
+      <table>
+        <tr>
+          <th>Ticket ID</th>
+          <td>${ticket.id}</td>
+        </tr>
+        <tr>
+          <th>Title</th>
+          <td>${ticket.title}</td>
+        </tr>
+        <tr>
+          <th>Price</th>
+          <td>${ticket.price}</td>
+        </tr>
+      </table>
+    </div>
 
-If you have any questions or concerns, please do not hesitate to contact us at support@example.com.
+    <p>
+      Please bring a copy of this email and a valid ID to the event for check-in.
+    </p>
 
-Thank you for choosing our service.
+    <p>
+      If you have any questions or concerns, please do not hesitate to contact us at <a href="mailto:${
+        process.env.SENDGRID_FROM_EMAIL
+      }">${process.env.SENDGRID_FROM_EMAIL}</a>.
+    </p>
 
-Best regards,
-NDASimple Team
+    <p>
+      Thank you for choosing our service.
+    </p>
+
+    <p>
+      Best regards,<br />
+      NDASimple Team
+    </p>
+  </body>
+</html>
+
 `,
       }
 
