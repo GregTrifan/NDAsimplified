@@ -26,7 +26,7 @@ export default async function completePayment(req: NextApiRequest, res: NextApiR
         to: email,
         from: process.env.SENDGRID_FROM_EMAIL!,
         subject: "Payment confirmation",
-        text: `<!DOCTYPE html>
+        html: `<!DOCTYPE html>
 <html>
   <head>
     <style>
